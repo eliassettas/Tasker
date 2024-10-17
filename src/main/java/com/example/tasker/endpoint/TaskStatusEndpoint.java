@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.tasker.model.dto.TypeDTO;
 import com.example.tasker.service.TaskStatusService;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("api/task-statuses")
@@ -19,6 +20,7 @@ public class TaskStatusEndpoint {
         this.taskStatusService = taskStatusService;
     }
 
+    @Operation(summary = "Retrieves all the task statuses")
     @GetMapping
     public List<TypeDTO> getAllTaskStatuses() {
         return taskStatusService.getAllTaskStatuses();

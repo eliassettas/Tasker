@@ -18,6 +18,7 @@ import com.example.tasker.exception.CustomException;
 import com.example.tasker.model.dto.RegistrationRequest;
 import com.example.tasker.model.dto.UserDataDTO;
 import com.example.tasker.service.SystemUserService;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("api/users")
@@ -33,35 +34,41 @@ public class SystemUserEndpoint {
         return systemUserService.getAllUsers();
     }
 
+    @Operation(summary = "Retrieves the data of a user")
     @GetMapping("/{userId}")
     public UserDataDTO getUserData(@PathVariable("userId") Integer userId) throws CustomException {
         return systemUserService.getUserData(userId);
     }
 
+    @Operation(summary = "Registers a new user")
     @PostMapping("/registration")
     public ResponseEntity<?> registerUser(@RequestBody RegistrationRequest registrationRequest) throws CustomException {
         systemUserService.registerUser(registrationRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Activates a user")
     @GetMapping("/activation")
     public ResponseEntity<String> activateUser(@RequestParam("token") String token) throws CustomException {
         systemUserService.activateUser(token);
         return new ResponseEntity<>("User activated", HttpStatus.OK);
     }
 
+    @Operation(summary = "Updates the profile of a user")
     @PutMapping("/profile")
     public ResponseEntity<UserDataDTO> updateUserProfile(@RequestBody UserDataDTO userDataDTO) throws CustomException {
         UserDataDTO userData = systemUserService.updateUserProfile(userDataDTO);
         return new ResponseEntity<>(userData, HttpStatus.OK);
     }
 
+    @Operation(summary = "Retrieves the profile image of a user")
     @GetMapping("/image")
     public ResponseEntity<byte[]> getUserImage(@RequestParam("userId") Integer userId) throws CustomException {
         byte[] userImage = systemUserService.getUserImage(userId);
         return new ResponseEntity<>(userImage, HttpStatus.OK);
     }
 
+    @Operation(summary = "Updates the profile image of a user")
     @PutMapping("/image")
     public ResponseEntity<?> updateUserImage(@RequestParam("userId") Integer userId, @RequestParam("image") MultipartFile image) throws CustomException {
         systemUserService.updateUserImage(userId, image);

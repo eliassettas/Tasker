@@ -18,6 +18,7 @@ import com.example.tasker.exception.CustomException;
 import com.example.tasker.model.dto.TeamDTO;
 import com.example.tasker.model.dto.TeamMemberRelationshipDTO;
 import com.example.tasker.service.TeamService;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("api/teams")
@@ -29,16 +30,19 @@ public class TeamEndpoint {
         this.teamService = teamService;
     }
 
+    @Operation(summary = "Retrieves a team by its ID")
     @GetMapping("/{id}")
     public TeamDTO getTeamById(@PathVariable("id") Long id) throws CustomException {
         return teamService.getTeamDTOById(id);
     }
 
+    @Operation(summary = "Retrieves the teams associated with a user")
     @GetMapping("/users/{userId}")
     public List<TeamDTO> getTeamsByUser(@PathVariable("userId") Integer userId) {
         return teamService.getTeamsByUser(userId);
     }
 
+    @Operation(summary = "Creates a team")
     @PostMapping
     @PreAuthorize("hasAuthority('CREATE_TEAM')")
     public ResponseEntity<TeamDTO> createTeam(@RequestBody TeamDTO teamDTO) throws CustomException {
@@ -46,6 +50,7 @@ public class TeamEndpoint {
         return new ResponseEntity<>(createdTeam, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Updates a team")
     @PutMapping
     @PreAuthorize("hasAuthority('UPDATE_TEAM')")
     public ResponseEntity<TeamDTO> updateTeam(@RequestBody TeamDTO teamDTO) throws CustomException {
@@ -53,6 +58,7 @@ public class TeamEndpoint {
         return new ResponseEntity<>(updatedTeam, HttpStatus.OK);
     }
 
+    @Operation(summary = "Deletes a team")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE_TEAM')")
     public ResponseEntity<?> deleteTeam(@PathVariable("id") Long id) throws CustomException {
@@ -60,6 +66,7 @@ public class TeamEndpoint {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "Creates a team-member relationship")
     @PostMapping("/relationships")
     @PreAuthorize("hasAuthority('CREATE_TEAM_RELATIONSHIP')")
     public ResponseEntity<TeamMemberRelationshipDTO> createRelationship(@RequestBody TeamMemberRelationshipDTO teamMemberRelationshipDTO) throws CustomException {
@@ -67,6 +74,7 @@ public class TeamEndpoint {
         return new ResponseEntity<>(createdRelationship, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Deletes a team-member relationship")
     @DeleteMapping("/relationships")
     @PreAuthorize("hasAuthority('DELETE_TEAM_RELATIONSHIP')")
     public ResponseEntity<?> deleteRelationship(@RequestBody TeamMemberRelationshipDTO teamMemberRelationshipDTO) throws CustomException {
