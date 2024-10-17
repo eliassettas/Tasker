@@ -18,6 +18,7 @@ import com.example.tasker.exception.CustomException;
 import com.example.tasker.model.dto.TaskDTO;
 import com.example.tasker.model.dto.TaskSearchCriteria;
 import com.example.tasker.service.TaskService;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("api/tasks")
@@ -29,16 +30,19 @@ public class TaskEndpoint {
         this.taskService = taskService;
     }
 
+    @Operation(summary = "Retrieves a task by its ID")
     @GetMapping(value = "/{id}")
     public TaskDTO getTaskById(@PathVariable("id") Long id) throws CustomException {
         return taskService.getTaskDTOById(id);
     }
 
+    @Operation(summary = "Retrieves the tasks that fit the provided criteria")
     @GetMapping
     public List<TaskDTO> getTasksBySearchCriteria(@RequestBody TaskSearchCriteria taskSearchCriteria) throws CustomException {
         return taskService.getTasksBySearchCriteria(taskSearchCriteria);
     }
 
+    @Operation(summary = "Creates a task")
     @PostMapping
     @PreAuthorize("hasAuthority('CREATE_TASK')")
     public ResponseEntity<TaskDTO> createTask(@RequestBody TaskDTO taskDTO) throws CustomException {
@@ -46,6 +50,7 @@ public class TaskEndpoint {
         return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Updates a task")
     @PutMapping
     @PreAuthorize("hasAuthority('UPDATE_TASK')")
     public ResponseEntity<TaskDTO> updateTask(@RequestBody TaskDTO taskDTO) throws CustomException {
@@ -53,6 +58,7 @@ public class TaskEndpoint {
         return new ResponseEntity<>(updatedTask, HttpStatus.OK);
     }
 
+    @Operation(summary = "Deletes a task")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE_TASK')")
     public ResponseEntity<?> deleteTask(@PathVariable("id") Long id) throws CustomException {

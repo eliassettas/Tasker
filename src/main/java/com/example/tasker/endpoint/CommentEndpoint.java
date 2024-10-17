@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.tasker.exception.CustomException;
 import com.example.tasker.model.dto.CommentDTO;
 import com.example.tasker.service.CommentService;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("api/comments")
@@ -28,11 +29,13 @@ public class CommentEndpoint {
         this.commentService = commentService;
     }
 
+    @Operation(summary = "Retrieves the comments associated with a task")
     @GetMapping("/task/{task_id}")
     public List<CommentDTO> getCommentsByTask(@PathVariable("task_id") Long taskId) {
         return commentService.getCommentsByTask(taskId);
     }
 
+    @Operation(summary = "Creates a comment")
     @PostMapping
     @PreAuthorize("hasAuthority('CREATE_COMMENT')")
     public ResponseEntity<CommentDTO> createComment(@RequestBody CommentDTO commentDTO) throws CustomException {
@@ -40,6 +43,7 @@ public class CommentEndpoint {
         return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Updates a comment")
     @PutMapping
     @PreAuthorize("hasAuthority('UPDATE_COMMENT')")
     public ResponseEntity<CommentDTO> updateComment(@RequestBody CommentDTO commentDTO) throws CustomException {
@@ -47,6 +51,7 @@ public class CommentEndpoint {
         return new ResponseEntity<>(updatedComment, HttpStatus.OK);
     }
 
+    @Operation(summary = "Deletes a comment")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DELETE_COMMENT')")
     public ResponseEntity<?> deleteComment(@PathVariable("id") Long id) throws CustomException {
