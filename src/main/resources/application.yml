@@ -64,6 +64,7 @@ spring:
     port: 5672
     username: rabbitmq_user
     password: rabbitmq_pass
+    stomp-port: 61613
 
 logging:
   file:
