@@ -251,6 +251,18 @@ public class SystemUserService {
         }
     }
 
+    public byte[] getUserImage(Integer userId) throws CustomException {
+        SystemUser systemUser = systemUserRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "User not found"));
+
+        String imageURL = systemUser.getProfile().getImageURL();
+        if (imageURL == null) {
+            throw new CustomException(HttpStatus.NOT_FOUND, "User has no profile image");
+        }
+
+        return fileSystemService.loadUserImageBase64(imageURL);
+    }
+
     @Transactional(rollbackOn = CustomException.class)
     public void updateUserImage(Integer userId, MultipartFile image) throws CustomException {
         SecurityUtils.validateUser(userId);

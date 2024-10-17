@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 
 import javax.imageio.ImageIO;
 
@@ -95,5 +96,9 @@ public class FileSystemService {
         } catch (IOException exception) {
             throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to load the image from the file system");
         }
+    }
+
+    public byte[] loadUserImageBase64(String filePath) throws CustomException {
+        return Base64.getEncoder().encode(loadUserImage(filePath));
     }
 }
