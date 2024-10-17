@@ -8,6 +8,14 @@
         </li>
       </ul>
 
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item" *ngIf="isLoggedIn">
+          <a class="nav-link" (click)="viewChat()">Chat
+            <i class="fa-regular fa-message" [ngClass]="{'has-chat-message' : hasNewMessages}"></i>
+          </a>
+        </li>
+      </ul>
+
       <ul class="navbar-nav float-end me-5">
         <li class="nav-item" *ngIf="!isLoggedIn">
           <a class="nav-link" routerLinkActive="active" routerLink="/login">Login</a>

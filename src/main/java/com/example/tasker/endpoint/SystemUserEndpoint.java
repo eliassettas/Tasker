@@ -56,6 +56,12 @@ public class SystemUserEndpoint {
         return new ResponseEntity<>(userData, HttpStatus.OK);
     }
 
+    @GetMapping("/image")
+    public ResponseEntity<byte[]> getUserImage(@RequestParam("userId") Integer userId) throws CustomException {
+        byte[] userImage = systemUserService.getUserImage(userId);
+        return new ResponseEntity<>(userImage, HttpStatus.OK);
+    }
+
     @PutMapping("/image")
     public ResponseEntity<?> updateUserImage(@RequestParam("userId") Integer userId, @RequestParam("image") MultipartFile image) throws CustomException {
         systemUserService.updateUserImage(userId, image);

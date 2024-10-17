@@ -64,6 +64,7 @@ spring:
     port: 5672
     username: guest
     password: guest
+    stomp-port: 61613
 
 logging:
   file:
