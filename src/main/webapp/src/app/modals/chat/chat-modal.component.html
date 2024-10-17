@@ -1,0 +1,34 @@
+<div class="modal-header">
+  <h4>Chat</h4>
+  <button type="button" class="btn-close" (click)="close()"></button>
+</div>
+
+<div class="modal-body chat-modal-body" #modalBodyRef>
+  <ul class="chat">
+    <li #messagesListRef *ngFor="let message of messages"
+      [ngClass]="message.senderId === userId ? 'right clearfix' : 'left clearfix'">
+      <span class="chat-img" [ngClass]="message.senderId === userId ? 'float-end' : 'float-start'">
+        <img alt="User Avatar" class="profile-pic-chat" [src]="message.senderImage" />
+      </span>
+      <div class="chat-message-body clearfix">
+        <div class="header">
+          <strong class="primary-font" *ngIf="message.senderId !== userId">{{message.senderName}}</strong>
+          <small class="text-muted" [ngClass]="{'float-end' : message.senderId !== userId}">
+            {{message.timestamp | date:'shortTime'}}
+          </small>
+          <strong class="float-end primary-font" *ngIf="message.senderId === userId">{{message.senderName}}</strong>
+        </div>
+        <p style="word-wrap: break-word">{{message.content}}</p>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div class="modal-footer">
+  <form class="w-100" [formGroup]="chatForm" (ngSubmit)="sendMessage()">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Type your message here..." [formControlName]="'message'" />
+      <button class="btn btn-warning btn-sm" type="submit">Send</button>
+    </div>
+  </form>
+</div>

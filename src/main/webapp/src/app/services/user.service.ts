@@ -31,6 +31,12 @@ export class UserService {
     return this.http.put<UserData>(`${this.apiURL}/profile`, userData);
   }
 
+  public getUserImage(userId: number): Observable<string> {
+    const httpParams = new HttpParams()
+      .set('userId', userId);
+    return this.http.get<string>(`${this.apiURL}/image`, { params: httpParams, responseType: 'text' as 'json' });
+  }
+
   public updateUserImage(userId: number, image: File): Observable<string> {
     const httpParams = new HttpParams()
       .set('userId', userId);
