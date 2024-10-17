@@ -35,3 +35,59 @@ input.ng-invalid.ng-touched {
   height: 100px;
   border-radius: 50%;
 }
+
+.profile-pic-chat {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.has-chat-message {
+  color: #ff3d3d;
+}
+
+.chat {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-right: 5px;
+}
+
+.chat li {
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px dotted #B3A9A9;
+}
+
+.chat li.left .chat-message-body {
+  margin-left: 40px;
+}
+
+.chat li.right .chat-message-body {
+  margin-right: 40px;
+}
+
+.chat li .chat-message-body p {
+  margin: 0;
+  color: #777777;
+}
+
+.chat-modal-body {
+  overflow-y: scroll;
+  height: 500px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  background-color: #555;
+}
