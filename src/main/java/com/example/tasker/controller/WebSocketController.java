@@ -13,10 +13,17 @@ import org.springframework.stereotype.Controller;
 import com.example.tasker.model.message.ChatMessage;
 import com.example.tasker.model.persistence.SystemUser;
 import com.example.tasker.model.persistence.UserProfile;
+import com.example.tasker.service.ChatMessageService;
 import com.example.tasker.util.UserUtils;
 
 @Controller
 public class WebSocketController {
+
+    private final ChatMessageService chatMessageService;
+
+    public WebSocketController(ChatMessageService chatMessageService) {
+        this.chatMessageService = chatMessageService;
+    }
 
     @MessageMapping("/globalChat.sendMessage")
     @SendTo("/topic/globalChat.receiveMessage")
@@ -32,7 +39,6 @@ public class WebSocketController {
         String name = UserUtils.constructName(userProfile.getFirstName(), userProfile.getLastName());
         chatMessage.setSenderName(name);
         chatMessage.setTimestamp(LocalDateTime.now());
-        // TODO: Persist the message into a database like MongoDB
-        return chatMessage;
+        return chatMessageService.save(chatMessage);
     }
 }
