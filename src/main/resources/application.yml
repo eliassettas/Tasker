@@ -16,6 +16,14 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: tasker
+      username: tasker_user
+      password: tasker_pass
+
   mail:
     host: sandbox.smtp.mailtrap.io
     port: 2525
