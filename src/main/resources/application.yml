@@ -16,6 +16,14 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: tasker
+      username: admin
+      password: password
+
   sql:
     init:
       mode: always
