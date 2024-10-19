@@ -3,26 +3,18 @@ spring:
     banner-mode: off
 
   datasource:
-    url: jdbc:h2:file:./target/tasker-data/h2_database;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;
-    username: h2_user
-    password: h2_pass
-    driver-class-name: org.h2.Driver
+    url: jdbc:postgresql://localhost:5432/tasker
+    username: tasker_user
+    password: tasker_pass
+    driver-class-name: org.postgresql.Driver
 
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-
-  sql:
-    init:
-      mode: always
-
-  h2:
-    console:
-      enabled: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
   mail:
     host: sandbox.smtp.mailtrap.io
@@ -51,10 +43,10 @@ spring:
             driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
             tablePrefix: qrtz_
           data-source:
-            myDS.driver: org.h2.Driver
-            myDS.URL: jdbc:h2:file:./target/tasker-data/h2_database;
-            myDS.user: h2_user
-            myDS.password: = h2_pass
+            myDS.driver: org.postgresql.Driver
+            myDS.URL: jdbc:postgresql://localhost:5432/tasker
+            myDS.user: tasker_user
+            myDS.password: = tasker_pass
           scheduler:
             instanceName: demo-scheduler
             instanceId: AUTO
@@ -94,15 +86,9 @@ spring:
     activate:
       on-profile: elias
 
-  datasource:
-    url: jdbc:h2:file:C://Users/Elias/tasker-data/h2_database;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;
-
-  quartz:
-    properties:
-      org:
-        quartz:
-          data-source:
-            myDS.URL: jdbc:h2:file:C://Users/Elias/tasker-data/h2_database;
+  sql:
+    init:
+      mode: always
 
 logging:
   file:
