@@ -44,8 +44,8 @@ create table if not exists user_profile (
     phone             varchar(100),
     image_url         varchar(500),
     job_title_id      bigint,
-    creation_date     datetime,
-    last_update_date  datetime,
+    creation_date     timestamp,
+    last_update_date  timestamp,
     constraint pk_user_profile primary key (id),
     constraint fk_user_profile_job_title foreign key (job_title_id) references job_title(id),
     constraint fk_user_profile_app_user foreign key (app_user_id) references app_user(id)
@@ -56,8 +56,8 @@ create sequence if not exists registration_token_id_seq;
 create table if not exists registration_token (
     id bigint not null,
     token text not null,
-    creation_date datetime not null,
-    expiration_date datetime not null,
+    creation_date timestamp not null,
+    expiration_date timestamp not null,
     app_user_id integer not null,
     constraint pk_registration_token primary key (id),
     constraint fk_registration_token_app_user foreign key (app_user_id) references app_user(id)
@@ -69,8 +69,8 @@ create table if not exists refresh_token (
     id bigint not null,
     token text not null,
     app_user_id integer not null,
-    creation_date datetime not null,
-    last_update_date datetime not null,
+    creation_date timestamp not null,
+    last_update_date timestamp not null,
     constraint pk_refresh_token primary key (id),
     constraint fk_refresh_token_app_user foreign key (app_user_id) references app_user(id)
 );
@@ -80,8 +80,8 @@ create sequence if not exists team_id_seq;
 create table if not exists team (
     id                bigint not null,
     name              varchar(100) not null unique,
-    creation_date     datetime,
-    last_update_date  datetime,
+    creation_date     timestamp,
+    last_update_date  timestamp,
     constraint pk_team primary key (id)
 );
 
@@ -116,8 +116,8 @@ create table if not exists task (
     description       varchar(500) not null,
     assignee_id       integer not null,
     task_status_id    bigint not null,
-    creation_date     datetime,
-    last_update_date  datetime,
+    creation_date     timestamp,
+    last_update_date  timestamp,
     constraint pk_task primary key (id),
     constraint fk_task_app_user foreign key (assignee_id) references app_user(id),
     constraint fk_task_task_status foreign key (task_status_id) references task_status(id)
@@ -130,8 +130,8 @@ create table if not exists comment (
     description       varchar(500) not null,
     writer_id         integer not null,
     task_id           bigint not null,
-    creation_date     datetime,
-    last_update_date  datetime,
+    creation_date     timestamp,
+    last_update_date  timestamp,
     constraint pk_comment primary key (id),
     constraint fk_comment_app_user foreign key (writer_id) references app_user(id),
     constraint fk_comment_task foreign key (task_id) references task(id)
@@ -143,13 +143,13 @@ create table if not exists qrtz_blob_triggers (
     sched_name varchar(120) not null,
     trigger_name varchar (200)  not null ,
     trigger_group varchar (200)  not null ,
-    blob_data image null
+    blob_data bytea null
 );
 
 create table if not exists qrtz_calendars (
     sched_name varchar(120) not null,
     calendar_name varchar (200)  not null ,
-    calendar image not null,
+    calendar bytea not null,
     constraint pk_qrtz_calendars primary key (sched_name, calendar_name)
 );
 
@@ -200,7 +200,7 @@ create table if not exists qrtz_job_details (
     is_nonconcurrent boolean  not null ,
     is_update_data boolean  not null ,
     requests_recovery boolean  not null ,
-    job_data image null,
+    job_data bytea null,
     constraint pk_qrtz_job_details primary key (sched_name, job_name, job_group)
 );
 
@@ -220,7 +220,7 @@ create table if not exists qrtz_triggers (
     end_time bigint null ,
     calendar_name varchar (200)  null ,
     misfire_instr smallint null ,
-    job_data image null,
+    job_data bytea null,
     constraint pk_qrtz_triggers primary key (sched_name, trigger_name, trigger_group),
     constraint fk_qrtz_triggers_qrtz_job_details foreign key (sched_name, job_name, job_group) references qrtz_job_details (sched_name, job_name, job_group)
 );
