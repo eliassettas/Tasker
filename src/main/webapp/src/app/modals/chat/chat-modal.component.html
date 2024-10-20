@@ -14,7 +14,7 @@
         <div class="header">
           <strong class="primary-font" *ngIf="message.senderId !== userId">{{message.senderName}}</strong>
           <small class="text-muted" [ngClass]="{'float-end' : message.senderId !== userId}">
-            {{message.timestamp | date:'shortTime'}}
+            {{message.timestamp | date:'hh:mm:ss'}}
           </small>
           <strong class="float-end primary-font" *ngIf="message.senderId === userId">{{message.senderName}}</strong>
         </div>
