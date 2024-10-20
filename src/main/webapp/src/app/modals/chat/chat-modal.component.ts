@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { ChatMessage } from '../../models/chat-message';
+import { ChatMessageService } from '../../services/chat-message.service';
 import { ImageService } from '../../services/image.service';
 import { UserService } from '../../services/user.service';
 import { WebSocketService } from '../../services/web-socket.service';
@@ -32,11 +33,14 @@ export class ChatModalComponent implements OnInit, AfterViewInit {
   public userId!: number;
 
   private isScrolledToBottom = true;
+  private hasPreviousMessages = true;
   private messageSubscription!: Subscription;
+  private messageInterval!: NodeJS.Timeout;
 
   constructor(
     private modal: NgbActiveModal,
     private webSocketService: WebSocketService,
+    private chatMessageService: ChatMessageService,
     private userService: UserService,
     private imageService: ImageService
   ) { }
@@ -66,6 +70,20 @@ export class ChatModalComponent implements OnInit, AfterViewInit {
     this.messageSubscription = SubjectService.getMessageSubject().subscribe({
       next: message => this.receiveMessage(message)
     });
+
+    this.messageInterval = setInterval(() => {
+      if (!this.hasPreviousMessages || this.modalBodyRef.nativeElement.scrollTop !== 0) return;
+
+      const currentMessageId = this.messages.length !== 0 && this.messages[0].id
+        ? this.messages[0].id
+        : null;
+
+      this.chatMessageService.getPreviousMessages(currentMessageId).subscribe({
+        next: messages => this.receivePreviousMessages(messages)
+      });
+
+      this.modalBodyRef.nativeElement.scrollTop = 1;
+    }, 1000);
   }
 
   public sendMessage(): void {
@@ -80,15 +98,27 @@ export class ChatModalComponent implements OnInit, AfterViewInit {
   }
 
   private receiveMessage(message: ChatMessage): void {
+    this.handleMessageImages(message);
+    this.updateScrolledToBottom();
+    this.messages.push(message);
+  }
+
+  private receivePreviousMessages(messages: ChatMessage[]): void {
+    if (messages.length === 0) {
+      this.hasPreviousMessages = false;
+      return;
+    }
+    messages.forEach(message => this.handleMessageImages(message));
+    messages.reverse().forEach(message => this.messages.unshift(message));
+  }
+
+  private handleMessageImages(message: ChatMessage) {
     const storedImage = StorageUtils.getUserImage(message.senderId);
     if (storedImage) {
       message.senderImage = storedImage;
     } else {
       this.getUserImage(message);
     }
-
-    this.updateScrolledToBottom();
-    this.messages.push(message);
   }
 
   private getUserImage(message: ChatMessage): void {
@@ -109,6 +139,7 @@ export class ChatModalComponent implements OnInit, AfterViewInit {
   }
 
   public close(): void {
+    clearInterval(this.messageInterval);
     this.messageSubscription.unsubscribe();
     this.modal.close();
   }
