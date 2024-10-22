@@ -1,0 +1,13 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{label}}</h4>
+  <button type="button" class="btn-close" (click)="close(null)"></button>
+</div>
+
+<div class="modal-body">
+  <input type="text" class="w-100" [(ngModel)]="input">
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="close(null)">Cancel</button>
+  <button type="button" class="btn btn-primary" (click)="close(input)">Save</button>
+</div>

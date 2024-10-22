@@ -1,0 +1,112 @@
+<div class="container">
+  <div class="row gx-5">
+    <div class="col-4 border-end">
+      <div class="row">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Creation Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let team of teams; let index = index;" (click)="onSelectTeam(team?.id)">
+              <th scope="row">{{index + 1}}</th>
+              <td>{{team.name}}</td>
+              <td>{{team.creationDate | date:'dd/MM/yyyy, hh:mm:ss'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="row justify-content-center">
+        <button (click)="createTeam()">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="col" *ngIf="selectedTeam">
+      <div class="d-flex flex-row justify-content-center mb-5">
+        <h3 class="form-label me-2" *ngIf="!isEditTeamMode">{{selectedTeam.name}}</h3>
+        <input type="text" class="form-control w-50" [(ngModel)]="teamName" *ngIf="isEditTeamMode">
+        <button style="border:none;" class="mx-2" (click)="enableTeamEdit()" *ngIf="!isEditTeamMode && canEditTeam">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+        <button style="border:none;" (click)="deleteTeam()" *ngIf="!isEditTeamMode && canEditTeam">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+        <button style="border:none;" class="mx-2" (click)="updateTeam()" *ngIf="isEditTeamMode">
+          <i class="fa-solid fa-check"></i>
+        </button>
+        <button style="border:none;" (click)="isEditTeamMode = !isEditTeamMode" *ngIf="isEditTeamMode">
+          <i class="fa-solid fa-x"></i>
+        </button>
+      </div>
+
+      <div class="row text-center">
+        <h5>Members:</h5>
+      </div>
+
+      <div class="row justify-content-center">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Role</th>
+              <th scope="col">Leader</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let member of selectedTeam.members; let index = index;">
+              <th scope="row">{{index + 1}}</th>
+              <td>{{member.memberName}}</td>
+              <td>{{member.role}}</td>
+              <td *ngIf="member.leader"><i class="fa-solid fa-check"></i></td>
+              <td *ngIf="!member.leader"><i class="fa-solid fa-x"></i></td>
+              <td>
+                <button style="border:none;" (click)="removeMember(member)" *ngIf="canEditTeam">
+                  <i class="fa-regular fa-square-minus"></i>
+                </button>
+              </td>
+            </tr>
+
+            <tr *ngIf="isAddingMember">
+              <th scope="row"></th>
+              <td>
+                <select id="jobTitle" class="form-select" name="jobTitle" [(ngModel)]="newMember.memberId">
+                  <option *ngFor="let userData of users" [value]="userData.userId">
+                    {{userData.firstName + ' ' + userData.lastName}}
+                  </option>
+                </select>
+              </td>
+              <td>
+                <input type="text" class="form-control" [(ngModel)]="newMember.role">
+              </td>
+              <td>
+                <input type="checkbox" class="form-check-input" [(ngModel)]="newMember.leader">
+              </td>
+              <td>
+                <button style="border:none;" class="mx-2" (click)="addMember()">
+                  <i class="fa-solid fa-check"></i>
+                </button>
+                <button style="border:none;" (click)="isAddingMember = false">
+                  <i class="fa-solid fa-x"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="row justify-content-center" *ngIf="canEditTeam && !isAddingMember">
+        <button (click)="enableMemberAdding()">
+          <i class="fa-solid fa-user-plus"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
