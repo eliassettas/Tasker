@@ -4,3 +4,5 @@ class Type {
 }
 
 export class JobTitle extends Type { }
+
+export class TaskStatus extends Type { }

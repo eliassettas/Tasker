@@ -1,0 +1,23 @@
+<div class="modal-header">
+  <h4 class="modal-title">Create new task</h4>
+  <button type="button" class="btn-close" (click)="close()"></button>
+</div>
+
+<div class="modal-body">
+  <form>
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input id="name" type="text" class="w-100" [(ngModel)]="name">
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>>
+      <textarea id="description" rows="5" class="w-100" [(ngModel)]="description"></textarea>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="close()">Cancel</button>
+  <button type="button" class="btn btn-primary" (click)="createTask()">Create</button>
+</div>
