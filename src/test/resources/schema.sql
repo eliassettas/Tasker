@@ -113,7 +113,7 @@ create sequence if not exists task_id_seq;
 create table if not exists task (
     id                bigint not null,
     name              varchar(100) not null,
-    description       varchar(500) not null,
+    description       text not null,
     assignee_id       integer not null,
     task_status_id    bigint not null,
     creation_date     timestamp,
@@ -127,7 +127,7 @@ create sequence if not exists comment_id_seq;
 
 create table if not exists comment (
     id                bigint not null,
-    description       varchar(500) not null,
+    description       text not null,
     writer_id         integer not null,
     task_id           bigint not null,
     creation_date     timestamp,
