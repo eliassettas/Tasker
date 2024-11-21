@@ -1,0 +1,98 @@
+<div class="container">
+  <form [formGroup]="taskForm">
+    <div class="d-flex flex-row justify-content-center mb-5">
+      <h2 *ngIf="!task.isEditMode">{{task.name}}</h2>
+      <input id="name" type="text" class="form-control w-50" name="name" [formControlName]="'name'"
+        *ngIf="task.isEditMode">
+    </div>
+
+    <div class="row mb-3 border border-secondary">
+      <textarea id="description" name="description" type="text" class="form-control" rows="10"
+        [formControlName]="'description'">
+      </textarea>
+    </div>
+
+    <div class="row mb-3">
+      <label for="assignee" class="col-1 col-form-label">Assignee:</label>
+      <div class="col-2">
+        <select id="assignee" class="form-select" name="assignee" [formControlName]="'assignee'">
+          <option *ngFor="let user of users" [ngValue]="user.userId">{{user.firstName + ' ' + user.lastName}}
+          </option>
+        </select>
+      </div>
+
+      <label for="status" class="col-1 col-form-label">Status:</label>
+      <div class="col-2">
+        <select id="status" class="col-2 form-select" name="status" [formControlName]="'status'">
+          <option *ngFor="let status of taskStatuses" [ngValue]="status.name">{{status.description}}</option>
+        </select>
+      </div>
+
+      <div class="col" *ngIf="task.canEdit">
+        <button type="submit" class="btn btn-primary" (click)="enableEditMode()" *ngIf="!task.isEditMode">Edit</button>
+        <button type="button" class="btn btn-primary ms-3" (click)="deleteTask()"
+          *ngIf="!task.isEditMode">Delete</button>
+        <button type="button" class="btn btn-primary" (click)="saveTask()" *ngIf="task.isEditMode">Save</button>
+        <button type="button" class="btn btn-primary ms-3" (click)="cancelEditMode()"
+          *ngIf="task.isEditMode">Cancel</button>
+      </div>
+    </div>
+  </form>
+
+  <div class="row d-flex justify-content-center">
+    <div class="col-md-12 col-lg-10">
+      <div class="card text-body">
+        <h4 class="ms-3 mt-2">Write a new comment:</h4>
+
+        <div class="card-body px-4 d-flex flex-start col-md">
+          <textarea type="text" class="form-control" rows="10" [(ngModel)]="newComment"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary mx-auto mb-2" (click)="createComment()">Post</button>
+      </div>
+
+      <div class="card text-body">
+        <h4 class="ms-3 mt-2">Comments: {{comments.length}}</h4>
+        <hr class="my-0" />
+
+        <div *ngFor="let comment of comments">
+          <div class="card-body p-4">
+            <div class="d-flex flex-start">
+              <img class="rounded-circle shadow-1-strong me-3 profile-pic-chat" [src]="comment.writerImage" />
+
+              <div class="col-md">
+                <h6 class="fw-bold mb-1">{{comment.writerName}}</h6>
+
+                <div class="d-flex align-items-center mb-3">
+                  <p class="mb-0">{{comment.creationDate | date:'dd/MM/yyyy, hh:mm:ss'}}</p>
+                  <button class="ms-2" style="border:none;" (click)="toggleEditComment(comment, true)"
+                    *ngIf="comment.canEdit && !comment.isEditMode">
+                    <i class="fa-solid fa-pencil"></i>
+                  </button>
+                  <button class="ms-2" style="border:none;" (click)="updateComment(comment)"
+                    *ngIf="comment.canEdit && comment.isEditMode">
+                    <i class="fa-solid fa-check"></i>
+                  </button>
+                  <button class="ms-2" style="border:none;" (click)="toggleEditComment(comment, false)"
+                    *ngIf="comment.canEdit && comment.isEditMode">
+                    <i class="fa-solid fa-x"></i>
+                  </button>
+                  <button class="ms-2" style="border:none;" (click)="deleteComment(comment)"
+                    *ngIf="comment.canEdit && !comment.isEditMode">
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                </div>
+
+                <p class="mb-0 comment-description" *ngIf="!comment.isEditMode">{{comment.description}}</p>
+                <textarea type="text" class="form-control" rows="10" [(ngModel)]="comment.updatedDescription"
+                  *ngIf="comment.isEditMode"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-0" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="container">
+  <form [formGroup]="profileForm">
+    <div class="row mb-3">
+      <label for="assignee" class="col-1 col-form-label">Assignee:</label>
+      <div class="col-2">
+        <select id="assignee" class="form-select" name="assignee" [formControlName]="'assignee'">
+          <option *ngFor="let user of users" [ngValue]="user.userId">{{user.firstName + ' ' + user.lastName}}
+          </option>
+        </select>
+      </div>
+
+      <label for="status" class="col-1 col-form-label">Status:</label>
+      <div class="col-2">
+        <select id="status" class="form-select" name="status" [formControlName]="'status'">
+          <option *ngFor="let status of taskStatuses" [ngValue]="status.name">{{status.description}}</option>
+        </select>
+      </div>
+
+      <label for="name" class="col-1 col-form-label">Name:</label>
+      <div class="col-2">
+        <input id="name" type="text" class="form-control" name="name" [formControlName]="'name'">
+      </div>
+
+      <div class="col">
+        <button type="submit" class="btn btn-primary" (click)="search()">Search
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        <button type="button" class="btn btn-primary float-end" (click)="createTask()">Create New
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <table class="table table-hover table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Assignee</th>
+        <th scope="col">Status</th>
+        <th scope="col">Creation Date</th>
+        <th scope="col">Last Update Date</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let task of tasks; let index = index;">
+        <td>{{task.name}}</td>
+        <td>{{task.assigneeName}}</td>
+        <td>{{task.taskStatus?.description}}</td>
+        <td>{{task.creationDate | date:'dd/MM/yyyy, hh:mm:ss'}}</td>
+        <td>{{task.lastUpdateDate | date:'dd/MM/yyyy, hh:mm:ss'}}</td>
+        <td>
+          <button style="border:none;" (click)="viewTask(task)">
+            <i class="fa-regular fa-eye"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <ngb-pagination [collectionSize]="totalElements" [(page)]="currentPage" [maxSize]="tableSize" [rotate]="true"
+    [ellipses]="false" [boundaryLinks]="true" (pageChange)="search()" />
+</div>
