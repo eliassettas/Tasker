@@ -218,8 +218,9 @@
                         </goals>
                         <configuration>
                             <workingDirectory>src/main/webapp</workingDirectory>
-                            <executable>ng</executable>
+                            <executable>npm</executable>
                             <arguments>
+                                <argument>run</argument>
                                 <argument>build</argument>
                             </arguments>
                         </configuration>
